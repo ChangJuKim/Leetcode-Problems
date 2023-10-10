@@ -24,13 +24,15 @@ class Solution {
             }
         }
 
-        // Skipping nums[i] gives a greater result
+        // Check if skipping nums1[i] gives a greater result
         if (i > 0) {
-            currentValue = Math.max(currentValue, memo[getPreviousRowIndex(i)][j]);
+            int row = getPreviousRowIndex(i);
+            currentValue = Math.max(currentValue, memo[row][j]);
         }
-        // Skipping nums[j] gives a greater result
+        // Check if sipping nums2[j] gives a greater result
         if (j > 0) {
-            currentValue = Math.max(currentValue, memo[getCurrentRowIndex(i)][j-1]);
+            int row = getCurrentRowIndex(i);
+            currentValue = Math.max(currentValue, memo[row][j-1]);
         }
         // Return greatest value
         return currentValue;
