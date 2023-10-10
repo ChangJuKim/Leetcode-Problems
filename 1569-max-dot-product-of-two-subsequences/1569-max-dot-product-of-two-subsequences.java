@@ -4,30 +4,44 @@ class Solution {
             return 0;
         }
 
-        int[][] memo = new int[nums1.length][nums2.length];
-        for (int i = 0; i < memo.length; i++) {
-            for (int j = 0; j < memo[i].length; j++) {
-                int cellValue = nums1[i] * nums2[j];
-                cellValue = findGreatestCellValue(cellValue, memo, i, j);
-                memo[i][j] = cellValue;
+        // We only need to store 2 rows of memory as we are only checking
+        // up, left and diagonally up-left
+        int[][] memo = new int[2][nums2.length];
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < memo[0].length; j++) {
+                int cellValue = findGreatestCellValue(nums1, nums2, memo, i, j);
+                memo[getCurrentRowIndex(i)][j] = cellValue;
             }
         }
-        return memo[nums1.length-1][nums2.length-1];
+        return memo[getCurrentRowIndex(nums1.length - 1)][nums2.length-1];
     }
 
-    private int findGreatestCellValue(int currentValue, int[][] memo, int i, int j) {
+    private int findGreatestCellValue(int[] nums1, int[] nums2, int[][] memo, int i, int j) {
+        int currentValue = nums1[i] * nums2[j];
         if (i > 0 && j > 0) {
-            if (memo[i-1][j-1] >= 0) {
-                currentValue += memo[i-1][j-1];
+            if (memo[getPreviousRowIndex(i)][j-1] >= 0) {
+                currentValue += memo[getPreviousRowIndex(i)][j-1];
             }
         }
+
+        // Skipping nums[i] gives a greater result
         if (i > 0) {
-            currentValue = Math.max(currentValue, memo[i-1][j]);
+            currentValue = Math.max(currentValue, memo[getPreviousRowIndex(i)][j]);
         }
+        // Skipping nums[j] gives a greater result
         if (j > 0) {
-            currentValue = Math.max(currentValue, memo[i][j-1]);
+            currentValue = Math.max(currentValue, memo[getCurrentRowIndex(i)][j-1]);
         }
+        // Return greatest value
         return currentValue;
+    }
+
+    private int getCurrentRowIndex(int i) {
+        return i % 2;
+    }
+
+    private int getPreviousRowIndex(int i) {
+        return (i+1) % 2;
     }
 }
 
