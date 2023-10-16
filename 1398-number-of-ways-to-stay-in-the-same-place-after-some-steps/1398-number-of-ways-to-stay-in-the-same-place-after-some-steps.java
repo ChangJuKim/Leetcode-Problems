@@ -16,7 +16,6 @@ class Solution {
                 if (index != arrLen - 1) {
                     numWays = sumWithModulo(numWays, waysToZero[oldIndex][index+1]);
                 }
-                //System.out.println("STEP " + step + " => " + numWays);
                 waysToZero[newIndex][index] = numWays;
             }
         }
@@ -25,12 +24,6 @@ class Solution {
     }
 
     private int sumWithModulo(int num1, int num2) {
-/*
-        while (MODULO_CONSTANT - num1 >= num2) {
-            num2 = num2 - MODULO_CONSTANT;
-        }
-        */
-        //int sum = ((num1 % MODULO_CONSTANT) + (num2 % MODULO_CONSTANT)) % MODULO_CONSTANT;
         int sum = (num1 + num2) % MODULO_CONSTANT;
         return sum;
     }
